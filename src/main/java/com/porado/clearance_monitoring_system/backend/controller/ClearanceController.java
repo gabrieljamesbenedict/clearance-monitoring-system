@@ -10,15 +10,14 @@ import com.porado.clearance_monitoring_system.backend.service.ClearanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@Controller
+@RestController  // Changed from @Controller to @RestController
 @RequestMapping("/clearances")
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:8080"})
 public class ClearanceController {
 
     private final ClearanceService clearanceService;
@@ -44,7 +43,7 @@ public class ClearanceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Clearance> deleteClearance(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteClearance(@PathVariable Long id) {
         clearanceService.deleteClearance(id);
         return ResponseEntity.noContent().build();
     }

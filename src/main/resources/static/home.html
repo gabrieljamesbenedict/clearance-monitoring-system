@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Clearance Monitoring</title>
+        <style>
+            table { border-collapse: collapse; margin-top: 8px; }
+            th, td { border: 1px solid #ccc; padding: 6px 8px; }
+        </style>
+    </head>
+    <body>
+        <h1>Clearances</h1>
+        <p>
+            <button id="refresh">Refresh</button>
+        </p>
+
+        <div id="clearances">Loading...</div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const list = document.getElementById('clearances');
+                const refresh = document.getElementById('refresh');
+
+                async function load() {
+                    list.textContent = 'Loading...';
+                    try {
+                        const res = await fetch('clearances', { credentials: 'include' });
+                        if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+                        const data = await res.json();
+
+                        if (!Array.isArray(data) || data.length === 0) {
+                            list.innerHTML = '<p>No clearances found.</p>';
+                            return;
+                        }
+
+                        const table = document.createElement('table');
+                        const header = document.createElement('tr');
+                        ['ID','Student','Number','Program','Purpose','Date'].forEach(h => {
+                            const th = document.createElement('th');
+                            th.textContent = h;
+                            header.appendChild(th);
+                        });
+                        table.appendChild(header);
+
+                        data.forEach(c => {
+                            const tr = document.createElement('tr');
+                            const values = [c.clearanceId, c.studentName, c.studentNumber, c.studentProgram, c.purposeOfClearance, c.date];
+                            values.forEach(v => {
+                                const td = document.createElement('td');
+                                td.textContent = v == null ? '' : v;
+                                tr.appendChild(td);
+                            });
+                            table.appendChild(tr);
+                        });
+
+                        list.innerHTML = '';
+                        list.appendChild(table);
+                    } catch (e) {
+                        list.innerHTML = '<pre style="color:red;">' + e.toString() + '</pre>';
+                    }
+                }
+
+                refresh.addEventListener('click', load);
+                load();
+            });
+        </script>
+    </body>
+</html>
