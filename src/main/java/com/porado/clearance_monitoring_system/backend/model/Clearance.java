@@ -24,20 +24,13 @@ public class Clearance {
     private String studentName;
 
     @Column(nullable = false)
-    private Long studentNumber;
-
+    private Integer studentNumber;
 
     @Column(nullable = false)
     private String studentProgram;
 
     @Column(nullable = false)
-    private String studentDepartment;
-
-    @Column(nullable = false)
     private String purposeOfClearance;
-
-    @Column(nullable = false)
-    private String status;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
