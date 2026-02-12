@@ -21,10 +21,19 @@ public class Clearance {
     private Long clearanceId;
 
     @Column(nullable = false)
-    private String studentName;
+    private String studentLastName;
+
+    @Column(nullable = false)
+    private String studentFirstName;
+
+    @Column(nullable = false)
+    private String studentMiddleName;
 
     @Column(nullable = false)
     private Integer studentNumber;
+
+    @Column(nullable = false)
+    private String studentSchool;
 
     @Column(nullable = false)
     private String studentProgram;
@@ -32,8 +41,14 @@ public class Clearance {
     @Column(nullable = false)
     private String purposeOfClearance;
 
+    @Column(nullable = false)
+    private String academicYear;
+
+    @Column(nullable = false)
+    private Integer semester;
+
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private Instant date;
+    private Instant timestamp;
 
 }
