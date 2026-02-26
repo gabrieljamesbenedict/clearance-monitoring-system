@@ -1,14 +1,15 @@
 package com.porado.clearance_monitoring_system.backend.serviceImpl;
 
 import com.porado.clearance_monitoring_system.backend.auth.MapuanUserDetails;
+import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.exception.UnauthenticatedException;
-import com.porado.clearance_monitoring_system.backend.model.Employee;
-import com.porado.clearance_monitoring_system.backend.model.Student;
-import com.porado.clearance_monitoring_system.backend.model.User;
+import com.porado.clearance_monitoring_system.backend.model.*;
 import com.porado.clearance_monitoring_system.backend.repository.EmployeeRepository;
 import com.porado.clearance_monitoring_system.backend.repository.StudentRepository;
 import com.porado.clearance_monitoring_system.backend.repository.UserRepository;
 import com.porado.clearance_monitoring_system.backend.service.AuthService;
+import com.porado.clearance_monitoring_system.backend.service.ProgramService;
+import com.porado.clearance_monitoring_system.backend.service.SchoolService;
 import com.porado.clearance_monitoring_system.backend.util.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,10 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final EmployeeRepository employeeRepository;
+
+    private final SchoolService schoolService;
+    private final ProgramService programService;
+
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -44,13 +49,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public User registerStudent(String email, String rawPassword, Student student) {
+    public User registerStudent(StudentRegistrationRequest request) {
+
+        School school = schoolService.get(request.schoolId());
+        Program program = programService.get(request.programId());
+
         User user = new User();
-        user.setEmail(email.toLowerCase());
-        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setLastname(request.lastname());
+        user.setFirstname(request.firstname());
+        user.setMiddlename(request.middlename());
+        user.setEmail(request.email().toLowerCase());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole(Role.ROLE_STUDENT);
         userRepository.save(user);
 
+        Student student = new Student();
+        student.setSchool(school);
+        student.setProgram(program);
         student.setUser(user);
         studentRepository.save(student);
 
