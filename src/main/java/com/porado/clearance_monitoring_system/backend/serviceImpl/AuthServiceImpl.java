@@ -1,6 +1,7 @@
 package com.porado.clearance_monitoring_system.backend.serviceImpl;
 
 import com.porado.clearance_monitoring_system.backend.auth.MapuanUserDetails;
+import com.porado.clearance_monitoring_system.backend.dto.EmployeeRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.exception.UnauthenticatedException;
 import com.porado.clearance_monitoring_system.backend.model.*;
@@ -73,14 +74,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User registerEmployee(String email, String rawPassword, Employee employee) {
-        User user = new User();
-        user.setEmail(email.toLowerCase());
-        user.setPassword(passwordEncoder.encode(rawPassword));
-        user.setRole(Role.ROLE_EMPLOYEE);
+    public User registerEmployee(EmployeeRegistrationRequest request) {
 
+        User user = new User();
+        user.setLastname(request.lastname());
+        user.setFirstname(request.firstname());
+        user.setMiddlename(request.middlename());
+        user.setEmail(request.email().toLowerCase());
+        user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(Role.ROLE_EMPLOYEE);
         userRepository.save(user);
 
+        Employee employee = new Employee();
+        employee.setEmployeeNumber(request.employeeNumber());
         employee.setUser(user);
         employeeRepository.save(employee);
 

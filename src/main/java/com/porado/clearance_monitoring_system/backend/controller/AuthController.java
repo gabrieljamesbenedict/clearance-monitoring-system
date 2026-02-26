@@ -1,5 +1,6 @@
 package com.porado.clearance_monitoring_system.backend.controller;
 
+import com.porado.clearance_monitoring_system.backend.dto.EmployeeRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.model.Program;
 import com.porado.clearance_monitoring_system.backend.model.School;
@@ -28,6 +29,15 @@ public class AuthController {
         authService.registerStudent(request);
 
         return ResponseEntity.ok("Student registered successfully");
+    }
+
+    @PostMapping("/register/employee")
+    public ResponseEntity<String> registerEmployee(
+            @RequestBody EmployeeRegistrationRequest request) {
+
+        authService.registerEmployee(request);
+
+        return ResponseEntity.ok("Employee registered successfully");
     }
 
 }
