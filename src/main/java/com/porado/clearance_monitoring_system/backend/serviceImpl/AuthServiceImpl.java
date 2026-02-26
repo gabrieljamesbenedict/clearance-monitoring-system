@@ -2,7 +2,10 @@ package com.porado.clearance_monitoring_system.backend.serviceImpl;
 
 import com.porado.clearance_monitoring_system.backend.auth.MapuanUserDetails;
 import com.porado.clearance_monitoring_system.backend.dto.EmployeeRegistrationRequest;
+import com.porado.clearance_monitoring_system.backend.dto.MeResponse;
 import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
+import com.porado.clearance_monitoring_system.backend.exception.EmployeeNotFoundException;
+import com.porado.clearance_monitoring_system.backend.exception.StudentNotFoundException;
 import com.porado.clearance_monitoring_system.backend.exception.UnauthenticatedException;
 import com.porado.clearance_monitoring_system.backend.model.*;
 import com.porado.clearance_monitoring_system.backend.repository.EmployeeRepository;
@@ -34,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User me() {
+    public MeResponse me() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new UnauthenticatedException();
@@ -42,7 +45,28 @@ public class AuthServiceImpl implements AuthService {
 
         Object principal = authentication.getPrincipal();
         if (principal instanceof MapuanUserDetails details) {
-            return details.getUser();
+            User user = details.getUser();
+
+            String studentNumber = null;
+            String employeeNumber = null;
+
+            if (user.getRole() == Role.ROLE_STUDENT) {
+                studentNumber = studentRepository.findById(user.getUserId())
+                        .orElseThrow(() -> new StudentNotFoundException("Student not found with Id=" + user.getUserId()))
+                        .getStudentNumber();
+            } else if (user.getRole() == Role.ROLE_EMPLOYEE) {
+                employeeNumber = employeeRepository.findById(user.getUserId())
+                        .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with Id=" + user.getUserId()))
+                        .getEmployeeNumber();
+            }
+
+            return new MeResponse(
+                    user.getUserId(),
+                    user.getEmail(),
+                    user.getRole(),
+                    studentNumber,
+                    employeeNumber
+            );
         }
 
         throw new UnauthenticatedException();
