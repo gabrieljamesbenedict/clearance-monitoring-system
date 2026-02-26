@@ -17,6 +17,10 @@ public class Program {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long programId;
 
+    @JoinColumn(name = "schoolId")
+    @OneToMany
+    private School school;
+
     @Column(nullable = false)
     private String name;
 

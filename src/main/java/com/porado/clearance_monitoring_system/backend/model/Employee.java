@@ -18,7 +18,7 @@ public class Employee {
 
     @OneToOne(optional = false)
     @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "userId")
     private User user;
 
     @Column(nullable = false, unique = true)
