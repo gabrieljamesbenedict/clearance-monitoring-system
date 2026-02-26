@@ -1,6 +1,7 @@
 package com.porado.clearance_monitoring_system.backend.auth;
 
 import com.porado.clearance_monitoring_system.backend.model.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MapuanUserDetails implements UserDetails {
 
+    @Getter
     private final User user;
 
     @Override
