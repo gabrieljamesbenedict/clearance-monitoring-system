@@ -18,7 +18,7 @@ public class Program {
     private Long programId;
 
     @JoinColumn(name = "schoolId")
-    @OneToMany
+    @ManyToOne
     private School school;
 
     @Column(nullable = false)
