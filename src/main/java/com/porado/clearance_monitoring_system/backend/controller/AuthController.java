@@ -22,6 +22,8 @@ public class AuthController {
 
     private final AuthService authService;
 
+    //TODO: fix auth
+
     @GetMapping("/me")
     public ResponseEntity<MeResponse> me () {
         MeResponse meResponse = authService.me();
