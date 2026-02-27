@@ -2,6 +2,7 @@ package com.porado.clearance_monitoring_system.backend.serviceImpl;
 
 import com.porado.clearance_monitoring_system.backend.auth.MapuanUserDetails;
 import com.porado.clearance_monitoring_system.backend.dto.EmployeeRegistrationRequest;
+import com.porado.clearance_monitoring_system.backend.dto.LoginRequest;
 import com.porado.clearance_monitoring_system.backend.dto.MeResponse;
 import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.exception.EmployeeNotFoundException;
@@ -15,10 +16,16 @@ import com.porado.clearance_monitoring_system.backend.service.AuthService;
 import com.porado.clearance_monitoring_system.backend.service.ProgramService;
 import com.porado.clearance_monitoring_system.backend.service.SchoolService;
 import com.porado.clearance_monitoring_system.backend.util.Role;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +42,7 @@ public class AuthServiceImpl implements AuthService {
     private final ProgramService programService;
 
     private final PasswordEncoder passwordEncoder;
+    //private final AuthenticationManager authenticationManager;
 
     @Override
     public MeResponse me() {
@@ -89,6 +97,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         Student student = new Student();
+        student.setStudentNumber(request.studentNumber());
         student.setSchool(school);
         student.setProgram(program);
         student.setUser(user);
