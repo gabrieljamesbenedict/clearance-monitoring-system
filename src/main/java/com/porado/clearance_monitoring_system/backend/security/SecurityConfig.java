@@ -61,7 +61,7 @@ public class SecurityConfig {
                             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             res.setContentType("application/json");
                             res.setCharacterEncoding("UTF-8");
-                            res.getWriter().write("{\"error\":\"Authentication failed\"");
+                            res.getWriter().write("{\"error\":\"Authentication failed\"}");
                         })
                 )
                 .logout(logout -> logout
