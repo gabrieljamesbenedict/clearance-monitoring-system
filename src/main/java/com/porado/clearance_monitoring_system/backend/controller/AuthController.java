@@ -2,7 +2,9 @@ package com.porado.clearance_monitoring_system.backend.controller;
 
 import com.porado.clearance_monitoring_system.backend.dto.EmployeeRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.dto.MeResponse;
+import com.porado.clearance_monitoring_system.backend.dto.MessageResponse;
 import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
+import com.porado.clearance_monitoring_system.backend.exception.StudentAlreadyExistsException;
 import com.porado.clearance_monitoring_system.backend.model.Program;
 import com.porado.clearance_monitoring_system.backend.model.School;
 import com.porado.clearance_monitoring_system.backend.model.Student;
@@ -31,12 +33,17 @@ public class AuthController {
     }
 
     @PostMapping("/register/student")
-    public ResponseEntity<String> registerStudent(
+    public ResponseEntity<MessageResponse> registerStudent(
             @RequestBody StudentRegistrationRequest request) {
 
-        authService.registerStudent(request);
-
-        return ResponseEntity.ok("Student registered successfully");
+        try {
+            authService.registerStudent(request);
+            return ResponseEntity.ok(new MessageResponse("Student registered successfully"));
+        } catch (StudentAlreadyExistsException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Student already exists"));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(new MessageResponse("Internal Server Error"));
+        }
     }
 
     @PostMapping("/register/employee")

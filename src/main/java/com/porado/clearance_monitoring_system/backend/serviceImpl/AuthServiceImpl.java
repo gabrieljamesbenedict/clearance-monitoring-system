@@ -6,6 +6,7 @@ import com.porado.clearance_monitoring_system.backend.dto.LoginRequest;
 import com.porado.clearance_monitoring_system.backend.dto.MeResponse;
 import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.exception.EmployeeNotFoundException;
+import com.porado.clearance_monitoring_system.backend.exception.StudentAlreadyExistsException;
 import com.porado.clearance_monitoring_system.backend.exception.StudentNotFoundException;
 import com.porado.clearance_monitoring_system.backend.exception.UnauthenticatedException;
 import com.porado.clearance_monitoring_system.backend.model.*;
@@ -88,6 +89,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public User registerStudent(StudentRegistrationRequest request) {
+
+        if (studentRepository.existsByStudentNumber(request.studentNumber())) {
+            throw new StudentAlreadyExistsException("Student already exists with studentNumber=" + request.studentNumber());
+        }
 
         School school = schoolService.get(request.schoolId());
         Program program = programService.get(request.programId());
