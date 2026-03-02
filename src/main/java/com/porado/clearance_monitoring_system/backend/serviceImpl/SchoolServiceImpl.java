@@ -8,12 +8,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository schoolRepository;
+
+    @Override
+    public List<School> getAll() {
+        return schoolRepository.findAll();
+    }
 
     @Override
     public School get(Long id) {
