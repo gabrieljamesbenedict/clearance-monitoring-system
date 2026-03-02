@@ -8,16 +8,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ProgramServiceImpl implements ProgramService {
 
-    private final ProgramRepository schoolRepository;
+    private final ProgramRepository programRepository;
+
+    @Override
+    public List<Program> getAll() {
+        return programRepository.findAll();
+    }
 
     @Override
     public Program get(Long id) {
-        return schoolRepository.findById(id)
+        return programRepository.findById(id)
                 .orElseThrow(() -> new ProgramNotFoundException("Program not found with Id=" + id));
     }
 }
