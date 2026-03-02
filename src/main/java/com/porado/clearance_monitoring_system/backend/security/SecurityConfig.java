@@ -55,14 +55,12 @@ public class SecurityConfig {
                         .successHandler((req, res, auth) -> {
                             res.setStatus(HttpServletResponse.SC_OK);
                             res.setContentType("application/json");
-                            res.setCharacterEncoding("UTF-8");
                             res.getWriter().write("{\"message\":\"Login successful\"}");
                         })
                         .failureHandler((req, res, ex) -> {
                             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             res.setContentType("application/json");
-                            res.setCharacterEncoding("UTF-8");
-                            res.getWriter().write("{\"error\":\"Authentication failed\"}");
+                            res.getWriter().write("{\"message\":\"Invalid Email or Password\"}");
                         })
                 )
                 .logout(logout -> logout
