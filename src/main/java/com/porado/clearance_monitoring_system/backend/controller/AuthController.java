@@ -24,12 +24,9 @@ public class AuthController {
 
     private final AuthService authService;
 
-    //TODO: fix auth
-
     @GetMapping("/me")
     public ResponseEntity<MeResponse> me () {
-        MeResponse meResponse = authService.me();
-        return ResponseEntity.ok(meResponse);
+        return ResponseEntity.ok(authService.me());
     }
 
     @PostMapping("/register/student")
