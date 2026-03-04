@@ -4,9 +4,10 @@ import com.porado.clearance_monitoring_system.backend.dto.EmployeeRegistrationRe
 import com.porado.clearance_monitoring_system.backend.dto.MeResponse;
 import com.porado.clearance_monitoring_system.backend.dto.StudentRegistrationRequest;
 import com.porado.clearance_monitoring_system.backend.model.User;
+import org.springframework.security.core.Authentication;
 
 public interface AuthService {
-    MeResponse me();
+    MeResponse me(Authentication authentication);
     User registerStudent(StudentRegistrationRequest registrationRequest);
     User registerEmployee(EmployeeRegistrationRequest registrationRequest);
 }

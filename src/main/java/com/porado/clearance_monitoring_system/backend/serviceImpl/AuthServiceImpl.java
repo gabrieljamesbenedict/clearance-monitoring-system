@@ -47,15 +47,7 @@ public class AuthServiceImpl implements AuthService {
     //private final AuthenticationManager authenticationManager;
 
     @Override
-    public MeResponse me() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (
-                authentication == null ||
-                !authentication.isAuthenticated() ||
-                authentication instanceof AnonymousAuthenticationToken
-        ) {
-            throw new UnauthenticatedException();
-        }
+    public MeResponse me(Authentication authentication) {
 
         Object principal = authentication.getPrincipal();
         if (principal instanceof MapuanUserDetails details) {

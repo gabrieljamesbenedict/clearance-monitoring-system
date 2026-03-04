@@ -15,6 +15,7 @@ import com.porado.clearance_monitoring_system.backend.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,8 +26,8 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/me")
-    public ResponseEntity<MeResponse> me () {
-        return ResponseEntity.ok(authService.me());
+    public ResponseEntity<MeResponse> me (Authentication authentication) {
+        return ResponseEntity.ok(authService.me(authentication));
     }
 
     @PostMapping("/register/student")
