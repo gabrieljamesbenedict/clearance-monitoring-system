@@ -75,9 +75,7 @@ public class AuthServiceImpl implements AuthService {
             }
 
             return new MeResponse(
-                    user.getUserId(),
-                    user.getEmail(),
-                    user.getRole(),
+                    user,
                     studentNumber,
                     employeeNumber
             );
