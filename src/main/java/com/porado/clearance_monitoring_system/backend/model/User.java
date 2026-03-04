@@ -39,4 +39,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Student student;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Employee employee;
 }

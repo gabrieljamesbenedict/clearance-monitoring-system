@@ -57,13 +57,9 @@ public class AuthServiceImpl implements AuthService {
             String employeeNumber = null;
 
             if (user.getRole() == Role.ROLE_STUDENT) {
-                studentNumber = studentRepository.findById(user.getUserId())
-                        .orElseThrow(() -> new StudentNotFoundException("Student not found with Id=" + user.getUserId()))
-                        .getStudentNumber();
+                studentNumber = user.getStudent().getStudentNumber();
             } else if (user.getRole() == Role.ROLE_EMPLOYEE) {
-                employeeNumber = employeeRepository.findById(user.getUserId())
-                        .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with Id=" + user.getUserId()))
-                        .getEmployeeNumber();
+                employeeNumber = user.getEmployee().getEmployeeNumber();
             }
 
             return new MeResponse(
