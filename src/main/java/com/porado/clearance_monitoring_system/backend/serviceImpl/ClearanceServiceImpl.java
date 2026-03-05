@@ -27,7 +27,7 @@ public class ClearanceServiceImpl implements ClearanceService {
     private final UserRepository userRepository;
 
     @Override
-    public List<ClearanceStudentResponse> getAllStudentClearance(Long studentId) {
+    public List<ClearanceStudentResponse> getAllStudentClearances(Long studentId) {
         return clearanceRepository
                 .findAllByUser_UserId(studentId)
                 .stream()

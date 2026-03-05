@@ -8,7 +8,7 @@ import com.porado.clearance_monitoring_system.backend.model.Clearance;
 import java.util.List;
 
 public interface ClearanceService {
-    List<ClearanceStudentResponse> getAllStudentClearance(Long studentId);
+    List<ClearanceStudentResponse> getAllStudentClearances(Long studentId);
     ClearanceStudentResponse getStudentClearance(Long studentId, Long clearanceId);
     Clearance createClearance(ClearanceCreationRequest clearance);
     Clearance updateClearance(ClearanceUpdateRequest clearance);
