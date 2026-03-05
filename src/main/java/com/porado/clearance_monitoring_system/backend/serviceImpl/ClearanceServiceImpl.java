@@ -11,6 +11,7 @@ import com.porado.clearance_monitoring_system.backend.repository.ClearanceReposi
 import com.porado.clearance_monitoring_system.backend.repository.StudentRepository;
 import com.porado.clearance_monitoring_system.backend.repository.UserRepository;
 import com.porado.clearance_monitoring_system.backend.service.ClearanceService;
+import com.porado.clearance_monitoring_system.backend.util.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +54,7 @@ public class ClearanceServiceImpl implements ClearanceService {
         clearance.setPurpose(request.purpose());
         clearance.setAcademicYear(request.academicYear());
         clearance.setSemester(request.semester());
+        clearance.setStatus(Status.PENDING);
 
         return clearanceRepository.save(clearance);
     }
@@ -65,6 +67,7 @@ public class ClearanceServiceImpl implements ClearanceService {
         clearance.setPurpose(request.purpose());
         clearance.setAcademicYear(request.academicYear());
         clearance.setSemester(request.semester());
+        clearance.setStatus(request.status());
 
         return clearanceRepository.save(clearance);
     }

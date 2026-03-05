@@ -1,5 +1,6 @@
 package com.porado.clearance_monitoring_system.backend.model;
 
+import com.porado.clearance_monitoring_system.backend.util.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,10 @@ public class Clearance {
 
     @Column(nullable = false)
     private String semester;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
