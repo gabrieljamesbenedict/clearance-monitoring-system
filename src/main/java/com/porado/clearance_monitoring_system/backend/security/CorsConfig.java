@@ -1,8 +1,3 @@
-/**
- * CORS configuration.
- * Allows port 3000 to connect (most of React apps)
- */
-
 package com.porado.clearance_monitoring_system.backend.security;
 
 import org.springframework.context.annotation.Bean;
@@ -16,14 +11,17 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000"
+        
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+                "http://192.168.*.*:3000"
         ));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 

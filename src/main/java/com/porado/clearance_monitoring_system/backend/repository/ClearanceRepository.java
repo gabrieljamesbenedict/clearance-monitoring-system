@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ClearanceRepository extends JpaRepository<Clearance, Long> {
     List<Clearance> findAllByUser_UserId(Long studentId);
-    Optional<Clearance> findByUser_UserId(Long studentId, Long clearanceId);
+    Optional<Clearance> findByUser_UserIdAndClearanceId(Long studentId, Long clearanceId); 
 }

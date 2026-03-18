@@ -15,7 +15,7 @@ import com.porado.clearance_monitoring_system.backend.util.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.porado.clearance_monitoring_system.backend.dto.ClearanceAdminResponse;
 import java.time.Instant;
 import java.util.List;
 
@@ -36,13 +36,14 @@ public class ClearanceServiceImpl implements ClearanceService {
                 .toList();
     }
 
-    @Override
-    public ClearanceStudentResponse getStudentClearance(Long studentId, Long clearanceId) {
-        Clearance clearance = clearanceRepository
-                .findByUser_UserId(studentId, clearanceId)
-                .orElseThrow(() -> new ClearanceNotFoundException("Clearance not found with Id=" + clearanceId));
-        return ClearanceStudentResponse.toStudentClearance(clearance);
-    }
+        @Override
+        public ClearanceStudentResponse getStudentClearance(Long studentId, Long clearanceId) {
+            Clearance clearance = clearanceRepository
+                    .findByUser_UserIdAndClearanceId(studentId, clearanceId) 
+                    .orElseThrow(() -> new ClearanceNotFoundException("Clearance not found with Id=" + clearanceId));
+
+            return ClearanceStudentResponse.toStudentClearance(clearance);
+        }
 
     @Override
     public Clearance createClearance(ClearanceCreationRequest request) {
@@ -77,5 +78,11 @@ public class ClearanceServiceImpl implements ClearanceService {
         Clearance clearance = clearanceRepository.findById(clearanceId).orElseThrow(() -> new ClearanceNotFoundException("Clearance not found with Id=" + clearanceId));
         clearance.setDeletedAt(Instant.now());
         clearanceRepository.save(clearance);
+    }
+    @Override
+    public List<ClearanceAdminResponse> getAllClearances() {
+        return clearanceRepository.findAll().stream()
+                .map(ClearanceAdminResponse::toAdminClearance)
+                .toList();
     }
 }

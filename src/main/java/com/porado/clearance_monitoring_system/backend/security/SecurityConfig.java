@@ -31,15 +31,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity(debug = false)
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login", "/auth/register/**", "/auth/me").permitAll()
@@ -58,14 +56,16 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler((req, res, auth) -> {
-                            res.setStatus(HttpServletResponse.SC_OK);
-                            res.setContentType("application/json");
-                            res.getWriter().write("{\"message\":\"Login successful\"}");
+                        res.setStatus(HttpServletResponse.SC_OK);
+                        res.setContentType("application/json");
+                        res.getWriter().write("{\"message\":\"Login successful\"}");
+                        res.getWriter().flush();
                         })
                         .failureHandler((req, res, ex) -> {
-                            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            res.setContentType("application/json");
-                            res.getWriter().write("{\"message\":\"Invalid Email or Password\"}");
+                        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        res.setContentType("application/json");
+                        res.getWriter().write("{\"message\":\"Invalid Email or Password\"}");
+                        res.getWriter().flush();
                         })
                 )
                 .logout(logout -> logout
